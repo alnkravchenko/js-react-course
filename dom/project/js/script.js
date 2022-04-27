@@ -2,11 +2,11 @@
 
 const movieDB = {
     movies: [
-        "Логан",
-        "Лига справедливости",
-        "Ла-ла лэнд",
-        "Одержимость",
-        "Скотт Пилигрим против..."
+        "Scott Pilgrim vs. the World",
+        "Logan",
+        "Justice League",
+        "Whiplash",
+        "La La Lend"
     ]
 };
 
