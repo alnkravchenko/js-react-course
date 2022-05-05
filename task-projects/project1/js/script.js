@@ -1,7 +1,7 @@
 'use strict';
 
 window.addEventListener("DOMContentLoaded", () => {
-  
+
   // Tabs
   const tabs = document.querySelectorAll(".tabheader__item"),
         tabsContent = document.querySelectorAll(".tabcontent"),
@@ -24,7 +24,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
     tabs[tabIndex].classList.add("tabheader__item_active");
   };
-  
+
   const activateTab = (tabsParent, tabs, content) => {
     tabsParent.addEventListener("click", (event) => {
       event.preventDefault();
@@ -42,7 +42,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
 
   // Timer
-  const deadline = "2022-05-11";
+  const deadline = new Date(Date.parse(new Date()) + (6 * 24 * 60 * 60 * 1000));
 
   const getTimeRemaining = endTime => {
     let days, hours, minutes, seconds;
@@ -156,12 +156,13 @@ window.addEventListener("DOMContentLoaded", () => {
   // Menu field
 
   class MenuCard {
-    constructor(name, imagePath, alt, desc, price, rate) {
+    constructor(name, imagePath, alt, desc, price, rate, ...classes) {
       this.name = name;
       this.img = imagePath;
       this.alt = alt;
       this.description = desc;
       this.price = price;
+      this.classes = classes;
       this.convertToUAH(rate);
     }
 
@@ -172,17 +173,18 @@ window.addEventListener("DOMContentLoaded", () => {
     render(parentSelector) {
       const parent = document.querySelector(parentSelector);
       const div = document.createElement("div");
-      div.classList.add("menu__item");
+      if (!this.classes.length) { 
+        this.classes = ["menu__item"];
+      }
+      this.classes.forEach(className => div.classList.add(className));
       div.innerHTML = `
-          <div class="menu__item">
-              <img src=${this.img} alt=${this.alt}>
-              <h3 class="menu__item-subtitle">${this.name}</h3>
-              <div class="menu__item-descr">${this.description}</div>
-              <div class="menu__item-divider"></div>
-              <div class="menu__item-price">
-                  <div class="menu__item-cost">Цена:</div>
-                  <div class="menu__item-total"><span>${this.price}</span> грн/день</div>
-              </div>
+          <img src=${this.img} alt=${this.alt}>
+          <h3 class="menu__item-subtitle">${this.name}</h3>
+          <div class="menu__item-descr">${this.description}</div>
+          <div class="menu__item-divider"></div>
+          <div class="menu__item-price">
+              <div class="menu__item-cost">Цена:</div>
+              <div class="menu__item-total"><span>${this.price}</span> грн/день</div>
           </div>
       `;
       parent.append(div);
@@ -195,7 +197,9 @@ window.addEventListener("DOMContentLoaded", () => {
     "vegy",
     'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей и фруктов. Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством!',
     8,
-    30
+    30,
+    "menu__item",
+    "big"
   ).render(".menu .container");
 
   new MenuCard(
