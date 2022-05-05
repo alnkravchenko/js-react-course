@@ -152,5 +152,68 @@ window.addEventListener("DOMContentLoaded", () => {
   };
 
   window.addEventListener("scroll", showModalByScroll);
+  
+  // Menu field
+
+  class MenuCard {
+    constructor(name, imagePath, alt, desc, price, rate) {
+      this.name = name;
+      this.img = imagePath;
+      this.alt = alt;
+      this.description = desc;
+      this.price = price;
+      this.convertToUAH(rate);
+    }
+
+    convertToUAH(rate) {
+      this.price = this.price * rate;
+    }
+
+    render(parentSelector) {
+      const parent = document.querySelector(parentSelector);
+      const div = document.createElement("div");
+      div.classList.add("menu__item");
+      div.innerHTML = `
+          <div class="menu__item">
+              <img src=${this.img} alt=${this.alt}>
+              <h3 class="menu__item-subtitle">${this.name}</h3>
+              <div class="menu__item-descr">${this.description}</div>
+              <div class="menu__item-divider"></div>
+              <div class="menu__item-price">
+                  <div class="menu__item-cost">Цена:</div>
+                  <div class="menu__item-total"><span>${this.price}</span> грн/день</div>
+              </div>
+          </div>
+      `;
+      parent.append(div);
+    }
+  }
+
+  new MenuCard(
+    'Меню "Фитнес"',
+    "img/tabs/vegy.jpg",
+    "vegy",
+    'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей и фруктов. Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством!',
+    8,
+    30
+  ).render(".menu .container");
+
+  new MenuCard(
+    'Меню "Премиум"',
+    "img/tabs/elite.jpg",
+    "elite",
+    'В меню "Премиум" мы используем не только красивый дизайн упаковки, но и качественное исполнение блюд. Красная рыба, морепродукты, фрукты - ресторанное меню без похода в ресторан!',
+    18,
+    30
+  ).render(".menu .container");
+
+  new MenuCard(
+    'Меню "Постное"',
+    "img/tabs/post.jpg",
+    "post",
+    'Меню "Постное" - это тщательный подбор ингредиентов: полное отсутствие продуктов животного происхождения, молоко из миндаля, овса, кокоса или гречки, правильное количество белков за счет тофу и импортных вегетарианских стейков.',
+    14,
+    30
+  ).render(".menu .container");
 
 });
