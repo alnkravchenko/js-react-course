@@ -1,0 +1,14 @@
+version: "3"
+services:
+  node:
+    image: "node:16"
+    container_name: "server"
+    working_dir: /usr/src/app
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./package.json:/usr/src/app/package.json
+      - ./package-lock.json:/usr/src/app/package-lock.json
+      - ./run.sh:/usr/src/app/run.sh
+      - ./src:/usr/src/app/src
+    command: "bash run.sh"
