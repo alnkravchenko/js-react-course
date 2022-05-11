@@ -189,12 +189,12 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 
   axios.get("http://localhost:3000/menu")
-  .then(res => {
+    .then(res => {
       res.data.forEach(({img, altimg, title, descr, price}) => {
-      new MenuCard(title, img, altimg, descr, price, 30)
-        .render(".menu .container");
+        new MenuCard(title, img, altimg, descr, price, 30)
+          .render(".menu .container");
+      });
     });
-  });
 
   // Forms
 
@@ -270,5 +270,52 @@ window.addEventListener("DOMContentLoaded", () => {
       closeModal();
     }, 3000);
   };
+
+  // Slider
+
+  const sliderOffset = document.querySelector(".offer__slider"),
+        slides = sliderOffset.querySelectorAll(".offer__slide"),
+        prevBtn = sliderOffset.querySelector(".offer__slider-prev"),
+        nextBtn = sliderOffset.querySelector(".offer__slider-next"),
+        counter = sliderOffset.querySelector("#current"),
+        total = sliderOffset.querySelector("#total");
+  let sliderIndex = 1;
+
+  const prettifyIndex = i => {
+    if (i >= 0 && i < 10){
+      return `0${i}`;
+    } else {
+      return i;
+    }
+  };
+
+  const showSlider = number => {
+    if (number < 1) {
+      sliderIndex = slides.length;
+    } else if (number > slides.length) {
+      sliderIndex = 1;
+    }
+    counter.textContent = prettifyIndex(sliderIndex);
+    slides.forEach(item => item.style.display = "none");
+    slides[sliderIndex - 1].style.display = "block";
+  };
+
+  const plusSlider = number => { 
+    sliderIndex += number;
+    showSlider(sliderIndex);
+  };
+
+  prevBtn.addEventListener("click", event => {
+    event.preventDefault();
+    plusSlider(-1);
+  });
+
+  nextBtn.addEventListener("click", event => {
+    event.preventDefault();
+    plusSlider(1);
+  });
+
+  showSlider(1);
+  total.textContent = prettifyIndex(sliderIndex);
 
 });
