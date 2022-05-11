@@ -188,19 +188,9 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  const getResources = async url => {
-    const res = await fetch(url);
-
-    if (!res.ok) {
-      throw new Error(`Could not fetch ${url}, status ${res.status}`);
-    }
-
-    return await res.json();
-  };
-
-  getResources("http://localhost:3000/menu")
+  axios.get("http://localhost:3000/menu")
   .then(res => {
-    res.forEach(({img, altimg, title, descr, price}) => {
+      res.data.forEach(({img, altimg, title, descr, price}) => {
       new MenuCard(title, img, altimg, descr, price, 30)
         .render(".menu .container");
     });
