@@ -102,4 +102,4 @@ const slider = function () {
   });
 };
 
-module.exports = slider;
+export default slider;

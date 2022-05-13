@@ -1,4 +1,4 @@
-const calc = function () {
+const calc = () => {
   const result = document.querySelector('.calculating__result span');
   let sex, height, weight, age, ratio;
 
@@ -106,4 +106,4 @@ const calc = function () {
   getDynamicInfo("#age");
 };
 
-module.exports = calc;
+export default calc;

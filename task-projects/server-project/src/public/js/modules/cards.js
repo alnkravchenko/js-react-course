@@ -42,6 +42,7 @@ const cards = function () {
           .render(".menu .container");
       });
     });
+
 };
 
-module.exports = cards;
+export default cards;

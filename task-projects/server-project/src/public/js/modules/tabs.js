@@ -39,4 +39,4 @@ const tabs = function () {
   activateTab(tabsParent, tabs, tabsContent);
 };
 
-module.exports = tabs;
+export default tabs;

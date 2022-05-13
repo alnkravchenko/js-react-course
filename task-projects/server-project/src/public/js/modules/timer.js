@@ -62,4 +62,4 @@ const timer = function () {
   startTimer(".timer", deadline);
 };
 
-module.exports = timer;
+export default timer;
