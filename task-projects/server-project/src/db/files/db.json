@@ -23,20 +23,5 @@
     }
   ],
   "requests": [
-    {
-      "name": "asdasd",
-      "phone": "123123",
-      "id": 1
-    },
-    {
-      "name": "asd",
-      "phone": "123123",
-      "id": 2
-    },
-    {
-      "name": "asd",
-      "phone": "1231",
-      "id": 3
-    }
   ]
 }
