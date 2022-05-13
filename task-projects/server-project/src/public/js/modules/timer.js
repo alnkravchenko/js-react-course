@@ -1,6 +1,4 @@
-const timer = function () {
-  const deadline = new Date(Date.parse(new Date()) + (6 * 24 * 60 * 60 * 1000));
-
+const timer = (timerSelector, deadline) => {
   const getTimeRemaining = endTime => {
     let days, hours, minutes, seconds;
     const start = new Date(),
@@ -59,7 +57,7 @@ const timer = function () {
     }
   };
 
-  startTimer(".timer", deadline);
+  startTimer(timerSelector, deadline);
 };
 
 export default timer;

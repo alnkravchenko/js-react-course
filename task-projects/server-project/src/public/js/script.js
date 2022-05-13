@@ -9,19 +9,24 @@ import slider from './modules/slider';
 import calc from './modules/calc';
 
 window.addEventListener("DOMContentLoaded", () => {
-  const tabs = require('./modules/tabs'),
-    cards = require('./modules/cards'),
-    timer = require('./modules/timer'),
-    modal = require('./modules/modal'),
-    forms = require('./modules/forms'),
-    slider = require('./modules/slider'),
-    calc = require('./modules/calc');
 
-  tabs();
+  const modalTimerId = setTimeout(() => openModal(".modal", modalTimerId), 50000);
+  const deadline = new Date(Date.parse(new Date()) + (6 * 24 * 60 * 60 * 1000));
+
+  tabs(".tabheader__item", ".tabcontent", ".tabheader__items", "tabheader__item_active");
   cards();
-  timer();
-  modal();
-  forms();
-  slider();
+  timer(".timer", deadline);
+  modal(".modal", "[data-modal]", modalTimerId);
+  forms("form");
+  slider({
+    container: ".offer__slider",
+    slide: ".offer__slide",
+    nextArrow: ".offer__slider-next",
+    prevArrow: ".offer__slider-prev",
+    totalCounter: "#total",
+    curCounter: "#current",
+    wrapper: ".offer__slider-wrapper",
+    field: ".offer__slider-inner"
+  });
   calc();
 });

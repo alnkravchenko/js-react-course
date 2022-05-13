@@ -1,20 +1,13 @@
-const forms = function () {
-  const forms = document.querySelectorAll("form");
+import { openModal, closeModal } from "./modal";
+import { postData } from "../services/services";
+
+const forms = (formSelector, modalTimerId) => {
+  const forms = document.querySelectorAll(formSelector);
 
   const message = {
     loading: "img/form/spinner.svg",
     success: "Thanks!",
     failure: "Something went wrong..."
-  };
-
-  const postData = async (url, data) => {
-    const res = await fetch(url, {
-      method: "POST",
-      headers: { "Content-type": "application/json" },
-      body: data
-    });
-
-    return await res.json();
   };
 
   const bindPostData = form => {
@@ -47,10 +40,11 @@ const forms = function () {
   forms.forEach(bindPostData);
 
   const showThanksModal = message => {
-    const prevModalDialog = document.querySelector(".modal__dialog");
+    const prevModalDialog = document.querySelector(".modal__dialog"),
+      modal = document.querySelector(".modal");
     prevModalDialog.classList.add("hide");
     prevModalDialog.classList.remove("show");
-    openModal();
+    openModal(".modal", modalTimerId);
 
     const thanksModal = document.createElement("div");
     thanksModal.classList.add("modal__dialog");
@@ -68,7 +62,7 @@ const forms = function () {
       thanksModal.remove();
       prevModalDialog.classList.add("show");
       prevModalDialog.classList.remove("hide");
-      closeModal();
+      closeModal(".modal");
     }, 3000);
   };
 

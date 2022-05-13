@@ -1,4 +1,6 @@
-const cards = function () {
+import { getResource } from '../services/services';
+
+const cards = () => {
   class MenuCard {
     constructor(name, imagePath, alt, desc, price, rate, ...classes) {
       this.name = name;
@@ -35,11 +37,10 @@ const cards = function () {
     }
   }
 
-  axios.get("http://localhost:3000/menu")
-    .then(res => {
-      res.data.forEach(({ img, altimg, title, descr, price }) => {
-        new MenuCard(title, img, altimg, descr, price, 30)
-          .render(".menu .container");
+  getResource('http://localhost:3000/menu')
+    .then(data => {
+      data.forEach(({ img, altimg, title, descr, price }) => {
+        new MenuCard(title, img, altimg, descr, price, 30).render(".menu .container");
       });
     });
 

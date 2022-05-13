@@ -1,43 +1,46 @@
-const modal = function () {
-  const modal = document.querySelector(".modal"),
-    modalBtn = document.querySelectorAll("[data-modal]");
+const openModal = (modalSelector, modalTimerId) => {
+  const modal = document.querySelector(modalSelector);
+  document.body.style.overflow = "hidden";
 
-  const openModal = () => {
-    document.body.style.overflow = "hidden";
+  modal.classList.remove("hide");
+  modal.classList.add("show");
 
-    modal.classList.remove("hide");
-    modal.classList.add("show");
+  if (modalTimerId) {
     clearInterval(modalTimerId);
-  };
+  }
+};
 
-  const closeModal = () => {
-    document.body.style.overflow = "";
+const closeModal = (modalSelector) => {
+  const modal = document.querySelector(modalSelector);
+  document.body.style.overflow = "";
 
-    modal.classList.remove("show");
-    modal.classList.add("hide");
-  };
+  modal.classList.remove("show");
+  modal.classList.add("hide");
+};
+
+const modal = (modalSelector, triggerSelector, modalTimerId) => {
+  const modal = document.querySelector(modalSelector),
+    modalBtn = document.querySelectorAll(triggerSelector);
 
   modalBtn.forEach((btn) => {
-    btn.addEventListener("click", openModal);
+    btn.addEventListener("click", () => openModal(modalSelector, modalTimerId));
   });
 
   modal.addEventListener("click", (event) => {
     if (event.target && (event.target === modal || event.target.getAttribute("data-close") == "")) {
-      closeModal();
+      closeModal(modalSelector);
     }
   });
 
   document.addEventListener("keydown", (event) => {
     if (event.code == "Escape" && modal.classList.contains("show")) {
-      closeModal();
+      closeModal(modalSelector);
     }
   });
 
-  const modalTimerId = setTimeout(openModal, 50000);
-
   const showModalByScroll = () => {
     if (window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight) {
-      openModal();
+      openModal(modalSelector, modalTimerId);
       window.removeEventListener("scroll", showModalByScroll);
     }
   };
