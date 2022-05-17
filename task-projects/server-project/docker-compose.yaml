@@ -9,9 +9,9 @@ services:
     volumes:
       - ./package.json:/usr/src/app/package.json
       - ./package-lock.json:/usr/src/app/package-lock.json
-      - ./build/server.sh:/usr/src/app/build/server.sh
+      - ./scripts/server.sh:/usr/src/app/scripts/server.sh
       - ./src:/usr/src/app/src
-    command: "bash build/server.sh"
+    command: "bash scripts/server.sh"
   json-server:
     image: "node:16"
     container_name: json-server-container
@@ -19,6 +19,6 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ./build/db.sh:/usr/src/app/build/db.sh
+      - ./scripts/db.sh:/usr/src/app/scripts/db.sh
       - ./src/db:/usr/src/app/db
-    command: "bash build/db.sh"
+    command: "bash scripts/db.sh"
