@@ -16,7 +16,9 @@ class App extends Component {
                 { name: "John C.", salary: 800, increase: true, rise: true, id: 1 },
                 { name: "Alex M.", salary: 3000, increase: false, rise: false, id: 2 },
                 { name: "Carl W.", salary: 5000, increase: true, rise: false, id: 3 }
-            ]
+            ],
+            term: "",
+            filter: "all"
         };
         this.maxId = 4;
     }
@@ -56,19 +58,51 @@ class App extends Component {
         }));
     }
 
+    searchEmp = (items, term) => {
+        if (term.trim().length === 0) {
+            return items;
+        }
+
+        return items.filter(item => {
+            return item.name.indexOf(term) > -1;
+        });
+    }
+
+    onUpdateSearch = (term) => {
+        this.setState({ term });
+    }
+
+    onUpdateFilter = (filter) => {
+        this.setState({ filter });
+    }
+
+    filterPost = (items, filter) => {
+        switch (filter) {
+            case "promotion":
+                return items.filter(item => item.rise);
+            case "salary":
+                return items.filter(item => item.salary > 1000);
+            default:
+                return items;
+        }
+    }
+
     render() {
-        const withBonuses = this.state.data.filter(row => row.increase).length;
+        const { data, term, filter } = this.state;
+        const withBonuses = data.filter(row => row.increase).length;
+        const visibleData = this.filterPost(this.searchEmp(data, term), filter);
 
         return (
             <div className="app" >
-                <AppInfo total={this.state.data.length}
+                <AppInfo total={data.length}
                     withBonuses={withBonuses} />
                 <div className="search-panel">
-                    <SearchPanel />
-                    <AppFilter />
+                    <SearchPanel onUpdateSearch={this.onUpdateSearch} />
+                    <AppFilter onUpdateFilter={this.onUpdateFilter}
+                        filter={filter} />
                 </div>
 
-                <EmployeesList data={this.state.data}
+                <EmployeesList data={visibleData}
                     onDelete={this.deleteItem}
                     onToggleProp={this.onToggleProp} />
                 <EmployeesAddForm onAdd={this.addItem} />
