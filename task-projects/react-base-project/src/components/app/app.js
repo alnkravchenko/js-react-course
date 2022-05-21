@@ -66,9 +66,12 @@ class App extends Component {
     }
 
     render() {
+        const withBonuses = this.state.data.filter(row => row.increase).length;
+
         return (
             <div className="app" >
-                <AppInfo />
+                <AppInfo total={this.state.data.length}
+                    withBonuses={withBonuses} />
                 <div className="search-panel">
                     <SearchPanel />
                     <AppFilter />
