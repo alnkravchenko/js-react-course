@@ -30,17 +30,19 @@ class App extends Component {
     }
 
     addItem = (name, salary) => {
-        this.setState(({ data }) => {
-            const newEmployee = {
-                name: name,
-                salary: salary,
-                increase: false,
-                rise: false,
-                id: this.maxId++
-            }
+        if (name.length >= 3 && salary.length > 0) {
+            this.setState(({ data }) => {
+                const newEmployee = {
+                    name: name,
+                    salary: salary,
+                    increase: false,
+                    rise: false,
+                    id: this.maxId++
+                }
 
-            return { data: [...data, newEmployee] };
-        });
+                return { data: [...data, newEmployee] };
+            });
+        }
     }
 
     onToggleProp = (id, prop) => {
