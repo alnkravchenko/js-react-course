@@ -1,5 +1,6 @@
 import { Component } from 'react';
 
+import Spinner from '../spinner/Spinner';
 import MarvelService from '../../services/MarvelService';
 
 import './randomChar.scss';
@@ -12,13 +13,14 @@ class RandomChar extends Component {
     }
 
     state = {
-        character: {}
+        character: {},
+        loading: true
     }
 
     marvelService = new MarvelService();
 
     onCharLoaded = character => {
-        this.setState({ character });
+        this.setState({ character, loading: false });
     }
 
     getRandomCharacter = () => {
@@ -28,25 +30,11 @@ class RandomChar extends Component {
     }
 
     render() {
-        const { character: { name, description, thumbnail, homepage, wiki } } = this.state;
+        const { character, loading } = this.state;
 
         return (
             <div className="randomchar" >
-                <div className="randomchar__block">
-                    <img src={thumbnail} alt="Random character" className="randomchar__img" />
-                    <div className="randomchar__info">
-                        <p className="randomchar__name">{name}</p>
-                        <p className="randomchar__descr">{description}</p>
-                        <div className="randomchar__btns">
-                            <a href={homepage} className="button button__main">
-                                <div className="inner">homepage</div>
-                            </a>
-                            <a href={wiki} className="button button__secondary">
-                                <div className="inner">Wiki</div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
+                {loading ? <Spinner /> : <View character={character} />}
                 <div className="randomchar__static">
                     <p className="randomchar__title">
                         Random character for today!<br />
@@ -65,6 +53,25 @@ class RandomChar extends Component {
         );
     }
 
+}
+
+const View = ({ character }) => {
+    const { name, description, thumbnail, homepage, wiki } = character;
+    return (<div className="randomchar__block">
+        <img src={thumbnail} alt="Random character" className="randomchar__img" />
+        <div className="randomchar__info">
+            <p className="randomchar__name">{name}</p>
+            <p className="randomchar__descr">{description}</p>
+            <div className="randomchar__btns">
+                <a href={homepage} className="button button__main">
+                    <div className="inner">homepage</div>
+                </a>
+                <a href={wiki} className="button button__secondary">
+                    <div className="inner">Wiki</div>
+                </a>
+            </div>
+        </div>
+    </div>);
 }
 
 export default RandomChar;
