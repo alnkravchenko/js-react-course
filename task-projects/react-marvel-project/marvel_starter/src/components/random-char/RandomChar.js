@@ -1,6 +1,7 @@
 import { Component } from 'react';
 
 import Spinner from '../spinner/Spinner';
+import ErrorMessage from '../error-message/ErrorMessage';
 import MarvelService from '../../services/MarvelService';
 
 import './randomChar.scss';
@@ -14,10 +15,15 @@ class RandomChar extends Component {
 
     state = {
         character: {},
-        loading: true
+        loading: true,
+        error: false
     }
 
     marvelService = new MarvelService();
+
+    onError = () => {
+        this.setState({ loading: false, error: true });
+    }
 
     onCharLoaded = character => {
         this.setState({ character, loading: false });
@@ -26,15 +32,21 @@ class RandomChar extends Component {
     getRandomCharacter = () => {
         const id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000);
         this.marvelService.getCharacterById(id)
-            .then(this.onCharLoaded);
+            .then(this.onCharLoaded)
+            .catch(this.onError);
     }
 
     render() {
-        const { character, loading } = this.state;
+        const { character, loading, error } = this.state;
+        const errorMessage = error ? <ErrorMessage /> : null;
+        const spinner = loading ? <Spinner /> : null;
+        const content = !(loading || error) ? <View character={character} /> : null;
 
         return (
             <div className="randomchar" >
-                {loading ? <Spinner /> : <View character={character} />}
+                {errorMessage}
+                {spinner}
+                {content}
                 <div className="randomchar__static">
                     <p className="randomchar__title">
                         Random character for today!<br />
@@ -57,6 +69,7 @@ class RandomChar extends Component {
 
 const View = ({ character }) => {
     const { name, description, thumbnail, homepage, wiki } = character;
+
     return (<div className="randomchar__block">
         <img src={thumbnail} alt="Random character" className="randomchar__img" />
         <div className="randomchar__info">
