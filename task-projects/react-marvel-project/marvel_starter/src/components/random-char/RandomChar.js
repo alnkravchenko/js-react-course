@@ -18,6 +18,11 @@ class RandomChar extends Component {
 
     componentDidMount() {
         this.getRandomCharacter();
+        this.timerId = setInterval(this.getRandomCharacter, 5000);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.timerId);
     }
 
     onError = () => {
