@@ -27,7 +27,7 @@ export default class MarvelService {
 
     _transformCharacter = charData => {
         const thumbnail = Object.values(charData.thumbnail).join(".");
-        if (charData.description.length == 0) {
+        if (charData.description.length === 0) {
             charData.description = "Character description not found"
         } else if (charData.description.length > 210) {
             charData.description = charData.description.slice(0, 210) + "...";
