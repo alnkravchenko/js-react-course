@@ -38,7 +38,8 @@ export default class MarvelService {
             description: charData.description,
             thumbnail: thumbnail,
             homepage: charData.urls[0].url,
-            wiki: charData.urls[1].url
+            wiki: charData.urls[1].url,
+            comics: charData.comics.items
         };
     }
 }

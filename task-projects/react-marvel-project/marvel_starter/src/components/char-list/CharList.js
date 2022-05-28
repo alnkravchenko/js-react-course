@@ -2,6 +2,7 @@ import { Component } from 'react';
 
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../error-message/ErrorMessage';
+import Character from '../char-card/Character';
 import MarvelService from '../../services/MarvelService';
 
 import './charList.scss';
@@ -31,7 +32,7 @@ class CharList extends Component {
 
     renderItems = characters => {
         const items = characters.map(char =>
-            <Character key={char.id} character={char} />);
+            <Character key={char.id} data-id={char.id} character={char} onSelected={this.props.onCharSelected} />);
         return (
             <ul className="char__grid">
                 {items}
@@ -59,20 +60,5 @@ class CharList extends Component {
         )
     }
 }
-
-const Character = ({ character: { name, thumbnail } }) => {
-    const thumbnailStyle = {};
-    if (thumbnail.includes("image_not_available")) {
-        thumbnailStyle.objectFit = "contain";
-    }
-
-    return (
-        <li className="char__item">
-            <img src={thumbnail} alt={name} style={thumbnailStyle} />
-            <div className="char__name">{name}</div>
-        </li >
-    );
-}
-
 
 export default CharList;
