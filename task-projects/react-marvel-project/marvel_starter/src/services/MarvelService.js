@@ -33,6 +33,7 @@ export default class MarvelService {
             charData.description = charData.description.slice(0, 210) + "...";
         }
         return {
+            id: charData.id,
             name: charData.name,
             description: charData.description,
             thumbnail: thumbnail,
