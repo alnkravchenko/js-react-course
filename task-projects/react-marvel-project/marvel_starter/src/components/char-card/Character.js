@@ -1,4 +1,5 @@
 import { Component } from "react";
+import PropTypes from "prop-types"
 
 import './charCard.scss';
 
@@ -27,6 +28,15 @@ class Character extends Component {
             </li >
         );
     }
+}
+
+Character.propTypes = {
+    "data-id": PropTypes.number.isRequired,
+    character: PropTypes.shape({
+        name: PropTypes.string.isRequired,
+        thumbnail: PropTypes.string.isRequired
+    }).isRequired,
+    onSelected: PropTypes.func.isRequired
 }
 
 export default Character;

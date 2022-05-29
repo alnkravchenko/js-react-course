@@ -110,4 +110,8 @@ CharInfo.propTypes = {
     charId: PropTypes.number
 }
 
+CharInfo.defaultProps = {
+    charId: null
+}
+
 export default CharInfo;
