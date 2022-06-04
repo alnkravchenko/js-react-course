@@ -54,9 +54,28 @@ class CharList extends Component {
         }));
     }
 
+    itemRefs = [];
+
+    setRef = ref => {
+        this.itemRefs.push(ref);
+    }
+
+    focusOnItem = index => {
+        this.itemRefs.forEach(item => item.removeClass('char__item_selected'));
+        this.itemRefs[index].setClass('char__item_selected');
+        this.itemRefs[index].focus();
+    }
+
     renderItems = characters => {
-        const items = characters.map(char =>
-            <Character key={char.id} data-id={char.id} character={char} onSelected={this.props.onCharSelected} />);
+        const items = characters.map((char, index) =>
+            <Character
+                key={char.id}
+                ref={this.setRef}
+                character={char}
+                onSelected={() => {
+                    this.props.onCharSelected(char.id);
+                    this.focusOnItem(index)
+                }} />);
         return (
             <ul className="char__grid">
                 {items}
