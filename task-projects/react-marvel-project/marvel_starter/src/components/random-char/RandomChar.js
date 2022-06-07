@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useState, useEffect } from 'react';
 
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../error-message/ErrorMessage';
@@ -7,68 +7,64 @@ import MarvelService from '../../services/MarvelService';
 import './randomChar.scss';
 import mjolnir from '../../resources/img/mjolnir.png';
 
-class RandomChar extends Component {
-    state = {
-        character: {},
-        loading: true,
-        error: false
+const RandomChar = () => {
+
+    const [character, setChar] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(false);
+
+    const marvelService = new MarvelService();
+
+    useEffect(() => {
+        getRandomCharacter();
+        const timerId = setInterval(getRandomCharacter, 5000);
+
+        return () => clearInterval(timerId);
+    }, [])
+
+    const onError = () => {
+        setLoading(false);
+        setError(true);
     }
 
-    marvelService = new MarvelService();
-
-    componentDidMount() {
-        this.getRandomCharacter();
-        this.timerId = setInterval(this.getRandomCharacter, 5000);
+    const onCharLoaded = character => {
+        setChar(character);
+        setLoading(false);
     }
 
-    componentWillUnmount() {
-        clearInterval(this.timerId);
-    }
-
-    onError = () => {
-        this.setState({ loading: false, error: true });
-    }
-
-    onCharLoaded = character => {
-        this.setState({ character, loading: false });
-    }
-
-    getRandomCharacter = () => {
+    const getRandomCharacter = () => {
         const id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000);
-        this.marvelService.getCharacterById(id)
-            .then(this.onCharLoaded)
-            .catch(this.onError);
+        marvelService.getCharacterById(id)
+            .then(onCharLoaded)
+            .catch(onError);
     }
 
-    render() {
-        const { character, loading, error } = this.state;
-        const errorMessage = error ? <ErrorMessage /> : null;
-        const spinner = loading ? <Spinner /> : null;
-        const content = !(loading || error) ? <View character={character} /> : null;
 
-        return (
-            <div className="randomchar" >
-                {errorMessage}
-                {spinner}
-                {content}
-                <div className="randomchar__static">
-                    <p className="randomchar__title">
-                        Random character for today!<br />
-                        Do you want to get to know him better?
-                    </p>
-                    <p className="randomchar__title">
-                        Or choose another one
-                    </p>
-                    <button className="button button__main"
-                        onClick={this.getRandomCharacter}>
-                        <div className="inner">try it</div>
-                    </button>
-                    <img src={mjolnir} alt="mjolnir" className="randomchar__decoration" />
-                </div>
+    const errorMessage = error ? <ErrorMessage /> : null;
+    const spinner = loading ? <Spinner /> : null;
+    const content = !(loading || error) ? <View character={character} /> : null;
+
+    return (
+        <div className="randomchar" >
+            {errorMessage}
+            {spinner}
+            {content}
+            <div className="randomchar__static">
+                <p className="randomchar__title">
+                    Random character for today!<br />
+                    Do you want to get to know him better?
+                </p>
+                <p className="randomchar__title">
+                    Or choose another one
+                </p>
+                <button className="button button__main"
+                    onClick={getRandomCharacter}>
+                    <div className="inner">try it</div>
+                </button>
+                <img src={mjolnir} alt="mjolnir" className="randomchar__decoration" />
             </div>
-        );
-    }
-
+        </div>
+    );
 }
 
 const View = ({ character }) => {
