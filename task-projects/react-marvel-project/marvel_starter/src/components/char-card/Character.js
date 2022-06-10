@@ -25,12 +25,4 @@ const Character = (props, ref) => {
     );
 }
 
-Character.propTypes = {
-    character: PropTypes.shape({
-        name: PropTypes.string.isRequired,
-        thumbnail: PropTypes.string.isRequired
-    }).isRequired,
-    onSelected: PropTypes.func.isRequired
-}
-
 export default React.forwardRef(Character);

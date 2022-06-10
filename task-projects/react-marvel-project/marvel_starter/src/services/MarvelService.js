@@ -1,33 +1,26 @@
 import { publicKey } from "../env/config.json";
+import { useHttp } from "../hooks/http.hook";
 
-export default class MarvelService {
-    _baseURL = "https://gateway.marvel.com:443/v1/public/"
-    _baseOffset = 210;
+export const useMarvelService = () => {
+    const { loading, request, error, clearError } = useHttp();
 
-    getResource = async url => {
-        const res = await fetch(url);
+    const _baseURL = "https://gateway.marvel.com:443/v1/public/"
+    const _baseOffset = 210;
 
-        if (!res.ok) {
-            throw new Error(`Could not fetch ${url}, status: ${res.status}`);
-        }
-
-        return await res.json();
-    };
-
-    getAllCharacters = async (offset = this._baseOffset) => {
-        const url = this._baseURL +
+    const getAllCharacters = async (offset = _baseOffset) => {
+        const url = _baseURL +
             `characters?limit=9&offset=${offset}&apikey=${publicKey}`;
-        const res = await this.getResource(url);
-        return res.data.results.map(this._transformCharacter);
+        const res = await request(url);
+        return res.data.results.map(_transformCharacter);
     }
 
-    getCharacterById = async id => {
-        const url = this._baseURL + `characters/${id}?apikey=${publicKey}`;
-        const res = await this.getResource(url);
-        return this._transformCharacter(res.data.results[0]);
+    const getCharacterById = async id => {
+        const url = _baseURL + `characters/${id}?apikey=${publicKey}`;
+        const res = await request(url);
+        return _transformCharacter(res.data.results[0]);
     }
 
-    _transformCharacter = charData => {
+    const _transformCharacter = charData => {
         const thumbnail = Object.values(charData.thumbnail).join(".");
         if (charData.description.length === 0) {
             charData.description = "Character description not found"
@@ -44,4 +37,8 @@ export default class MarvelService {
             comics: charData.comics.items
         };
     }
+
+    return {
+        loading, error, getAllCharacters, getCharacterById, clearError
+    };
 }
