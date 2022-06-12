@@ -22,7 +22,7 @@ export const useMarvelService = () => {
 
     const getAllComics = async (offset = _baseOffset) => {
         const url = _baseURL +
-            `comics?limit=9&offset=${offset}&apikey=${publicKey}`;
+            `comics?limit=8&offset=${offset}&apikey=${publicKey}`;
         const res = await request(url);
         return res.data.results.map(_transformComics);
     }
